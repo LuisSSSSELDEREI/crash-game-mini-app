@@ -1,0 +1,156 @@
+.friends-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.friends-header {
+  text-align: center;
+}
+
+.friends-header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.friends-header p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.invite-card {
+  background: rgba(32, 32, 32, 0.6);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.invite-card:hover {
+  background: rgba(32, 32, 32, 0.8);
+}
+
+.gift-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.invite-info {
+  flex: 1;
+}
+
+.invite-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.invite-bonus {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #FFB636;
+  font-weight: 500;
+}
+
+.coin-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.friends-list {
+  background: rgba(32, 32, 32, 0.4);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.friends-list-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.friends-list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover {
+  color: white;
+}
+
+.empty-friends {
+  padding: 32px 16px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 15px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px;
+  margin-top: auto;
+}
+
+.invite-button {
+  flex: 1;
+  height: 48px;
+  background: #FFB636;
+  border: none;
+  border-radius: 12px;
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.invite-button:hover {
+  background: #ffa506;
+  transform: translateY(-1px);
+}
+
+.copy-button {
+  height: 48px;
+  width: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
