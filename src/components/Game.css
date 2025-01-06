@@ -1,0 +1,1273 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #000;
+  color: white;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+  --primary: #8B5CF6;
+  --primary-dark: #7C3AED;
+  --success: #10B981;
+  --danger: #EF4444;
+  --background: #17181C;
+  --panel: rgba(255, 255, 255, 0.05);
+  --panel-hover: rgba(255, 255, 255, 0.08);
+  --text: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+}
+
+/* Base styles */
+body {
+  background: var(--background);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  color: var(--text);
+}
+
+/* Game wrapper */
+.game-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  padding: 16px;
+  gap: 12px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.game-content,
+.withdraw-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px; /* Оставляем место для навигации */
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Header */
+.header-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  padding: 12px;
+  border-radius: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #1E1F25;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo-brawl {
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+.logo-jet {
+  color: var(--success);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--panel);
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.balance img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Multipliers */
+.multipliers-history {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--panel);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.multiplier-item {
+  padding: 8px 12px;
+  background: var(--panel);
+  border-radius: 8px;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Game area */
+.game-area {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to bottom, #000000 var(--space-progress, 0%), #1a237e);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.space-container {
+  position: absolute;
+  width: 100%;
+  height: 600px;
+  transform-style: preserve-3d;
+  transform: translateY(calc(400px - var(--rocket-height, 0px)));
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+.rocket-container {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: height 0.3s ease;
+}
+
+.rocket-trail {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 4px;
+  background: linear-gradient(to bottom, rgba(255, 165, 0, 0.6), transparent);
+  transform: translateX(-50%);
+}
+
+.rocket-head {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 16px solid #ff6b00;
+  filter: drop-shadow(0 0 5px rgba(255, 107, 0, 0.7));
+}
+
+.rocket-glow {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle at center, rgba(255, 165, 0, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.planet {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  animation: planet-appear 1s forwards, float 6s infinite ease-in-out;
+  object-fit: contain;
+  z-index: 4;
+  opacity: 0;
+}
+
+.planet-image {
+  width: 100%;
+  height: auto;
+  max-width: 120px;
+  transition: transform 0.3s ease;
+}
+
+.planet:hover .planet-image {
+  transform: scale(1.1);
+}
+
+.planet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.planet span {
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.planet:hover span {
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.planets-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .planets-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.sun {
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%) translateZ(-20px);
+  width: 180px !important;
+  height: 180px !important;
+  animation: sun-glow 4s infinite ease-in-out, planet-appear 1s forwards;
+  filter: drop-shadow(0 0 30px rgba(255, 200, 0, 0.8))
+         drop-shadow(0 0 60px rgba(255, 160, 0, 0.6))
+         drop-shadow(0 0 90px rgba(255, 120, 0, 0.4));
+  z-index: 5;
+}
+
+.planet1 {
+  right: 20%;
+  top: 25%;
+  transform: translateZ(-30px);
+  animation-delay: 0s;
+  width: 140px;
+  height: 140px;
+}
+
+.planet2 {
+  left: 15%;
+  top: 40%;
+  transform: translateZ(-20px);
+  animation-delay: -2s;
+  width: 150px;
+  height: 150px;
+}
+
+.planet3 {
+  right: 25%;
+  top: 55%;
+  transform: translateZ(-25px);
+  animation-delay: -4s;
+  width: 100px;
+  height: 100px;
+}
+
+.planet4 {
+  left: 30%;
+  top: 70%;
+  transform: translateZ(-15px);
+  animation-delay: -1s;
+  width: 130px;
+  height: 130px;
+}
+
+.planet5 {
+  right: 10%;
+  top: 85%;
+  transform: translateZ(-35px);
+  animation-delay: -3s;
+  width: 110px;
+  height: 110px;
+}
+
+.game-status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+               0 0 20px rgba(255, 255, 255, 0.3);
+  z-index: 20;
+  text-align: center;
+  transition: all 0.3s ease;
+  padding: 15px 30px;
+}
+
+.game-status.playing {
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5),
+               0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.game-status.crashed {
+  color: #ff4444;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5),
+               0 0 20px rgba(255, 68, 68, 0.3);
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes planet-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(-50%, -50%); }
+  10%, 30%, 50%, 70%, 90% { transform: translate(-53%, -50%); }
+  20%, 40%, 60%, 80% { transform: translate(-47%, -50%); }
+}
+
+/* Betting controls */
+.betting-controls {
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.bet-amount-label {
+  color: #ffffff;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.bet-amount-control {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bet-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bet-button:hover {
+  background: var(--panel-hover);
+  transform: translateY(-2px);
+}
+
+.bet-button:active {
+  transform: scale(0.95);
+}
+
+.bet-input {
+  flex: 1;
+  height: 40px;
+  background: var(--panel);
+  border: none;
+  border-radius: 8px;
+  color: var(--text);
+  text-align: center;
+  font-size: 16px;
+}
+
+.auto-withdraw-input {
+  width: 100%;
+  height: 40px;
+  background: var(--panel);
+  border: none;
+  border-radius: 8px;
+  color: var(--text);
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+/* Auto withdraw section */
+.auto-withdraw-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.auto-withdraw-input-group {
+  flex: 1;
+  position: relative;
+}
+
+.auto-withdraw-input {
+  width: 100%;
+  height: 40px;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text);
+  text-align: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.auto-withdraw-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+.auto-withdraw-value {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.auto-withdraw-button {
+  height: 40px;
+  padding: 0 16px;
+  background: var(--panel);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.auto-withdraw-button:hover {
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.auto-withdraw-button.active {
+  background: var(--primary);
+  color: var(--text);
+}
+
+/* Quick bets */
+.quick-bets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.quick-bet {
+  padding: 8px;
+  background: var(--panel);
+  border: none;
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-bet:hover {
+  background: var(--panel-hover);
+  transform: translateY(-2px);
+}
+
+.quick-bet:active {
+  transform: scale(0.95);
+}
+
+/* Place bet button */
+.place-bet {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.place-bet:hover:not(:disabled) {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.place-bet:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.place-bet:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.place-bet.withdraw {
+  background: var(--success);
+}
+
+.place-bet.withdraw:hover {
+  background: var(--success);
+  opacity: 0.9;
+}
+
+/* Active bets */
+.active-bets-panel {
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.active-bets-header {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+/* Navigation */
+.nav-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #1A1A1A;
+  padding: 0;
+  z-index: 100;
+}
+
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+  width: 100%;
+  gap: 8px;
+}
+
+.nav-button img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.nav-button span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-button.active {
+  color: #FFD700;
+}
+
+.nav-button:not(:last-child) {
+  border-right: 1px solid #2A2A2A;
+}
+
+/* Сообщения */
+.game-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+}
+
+.game-message.success {
+  background: linear-gradient(to right, #00b09b, #96c93d);
+}
+
+.game-message.error {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+/* Utilities */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input:focus {
+  outline: none;
+}
+
+.game-field {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to top, #000000 var(--space-progress, 0%), #1a237e);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: --space-progress 0.3s ease;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: twinkle 2s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) translateZ(var(--z));
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.8) translateZ(var(--z));
+  }
+}
+
+.friends-modal {
+  position: fixed;
+  bottom: 80px; /* Высота навигации */
+  left: 0;
+  right: 0;
+  background: #1E1E1E;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  z-index: 1000;
+  color: white;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  max-height: calc(100vh - 80px); /* Вычитаем высоту навигации */
+  overflow-y: auto;
+  touch-action: pan-y;
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  margin: 0 auto 20px;
+  cursor: grab;
+}
+
+.friends-modal.visible {
+  transform: translateY(0);
+}
+
+.friends-modal.dragging {
+  transition: none;
+}
+
+/* Убираем прокрутку во время свайпа */
+.friends-modal.dragging {
+  overflow: hidden;
+}
+
+.friends-modal h2 {
+  font-size: 24px;
+  margin: 15px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.friends-modal p {
+  color: #888;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.invite-button {
+  display: flex;
+  align-items: center;
+  background: #2A2A2A;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.invite-button .gift-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.invite-button .bonus {
+  color: #FFD700;
+  margin-left: auto;
+  font-weight: bold;
+}
+
+.friends-list {
+  background: #2A2A2A;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  min-height: 100px;
+}
+
+.friends-list h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #888;
+}
+
+.friends-list .empty-message {
+  color: #888;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.invite-friend-button {
+  background: #FFD700;
+  color: black;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.copy-link-button {
+  background: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  color: #888;
+  margin-left: 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.modal-overlay.visible {
+  opacity: 1;
+}
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.friend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background: #1E1E1E;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.friend-avatar {
+  width: 40px;
+  height: 40px;
+  background: #FFD700;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.friend-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.friend-date {
+  font-size: 12px;
+  color: #888;
+}
+
+.copy-link-button {
+  background: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.copy-link-button:hover {
+  color: #FFD700;
+}
+
+.tasks-modal {
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  background: #17181C;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  z-index: 1000;
+  color: white;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  touch-action: pan-y;
+}
+
+.tasks-modal.visible {
+  transform: translateY(0);
+}
+
+.tasks-modal h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.tasks-modal h3 {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.tasks-section {
+  margin-bottom: 25px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1E1F25;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.task-text {
+  font-size: 14px;
+  color: white;
+}
+
+.task-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-reward {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #FFD700;
+  font-weight: 500;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.task-arrow {
+  color: #666;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Общие стили для модальных окон */
+.modal-base {
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #1E1F25 0%, #17181C 100%);
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  z-index: 1000;
+  color: white;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  touch-action: pan-y;
+  box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-base.visible {
+  transform: translateY(0);
+  animation: modalAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalAppear {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+  cursor: grab;
+  transition: background 0.2s;
+}
+
+.modal-handle:active {
+  background: rgba(255, 255, 255, 0.3);
+  cursor: grabbing;
+}
+
+/* Стили для модального окна друзей */
+.friends-modal {
+  composes: modal-base;
+}
+
+.friends-modal h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  background: linear-gradient(120deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+}
+
+.invite-button {
+  background: linear-gradient(135deg, #1E1F25 0%, #252630 100%);
+  border: 1px solid rgba(255, 215, 0, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.invite-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+.invite-button .bonus {
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Стили для модального окна заданий */
+.tasks-modal {
+  composes: modal-base;
+}
+
+.tasks-modal h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+  line-height: 1.3;
+  background: linear-gradient(120deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+}
+
+.task-item {
+  background: linear-gradient(135deg, #1E1F25 0%, #252630 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.1);
+}
+
+.task-reward {
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Стили для модального окна вывода */
+.withdraw-modal {
+  composes: modal-base;
+}
+
+.withdraw-option {
+  background: linear-gradient(135deg, #1E1F25 0%, #252630 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.withdraw-option:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.1);
+}
+
+.withdraw-button {
+  background: linear-gradient(120deg, #FFD700, #FFA500);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+}
+
+.withdraw-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+}
+
+.withdraw-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #666;
+}
+
+/* Анимации для элементов */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+  }
+}
+
+.glow-effect {
+  animation: glow 2s infinite;
+}
+
+/* Улучшенные стили для иконок */
+.task-icon, .coin-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.2s;
+}
+
+.task-item:hover .task-icon {
+  transform: scale(1.1);
+}
+
+/* Стили для прогресс-бара */
+.progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Эффект пульсации для новых элементов */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.new-item {
+  animation: pulse 2s infinite;
+}
+
+/* Стили для уведомлений */
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 2000;
+  animation: notificationAppear 0.3s ease-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes notificationAppear {
+  0% {
+    transform: translate(-50%, -20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+/* Стили для выполненных заданий */
+.task-item.completed {
+  opacity: 0.7;
+  background: linear-gradient(135deg, #1E1F25 0%, #252630 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.task-item.completed .task-completed {
+  color: #4CAF50;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.task-item.completed .task-completed span {
+  font-weight: 500;
+}
+
+.task-item.completed .task-arrow {
+  color: #4CAF50;
+}
+
+/* Анимация для получения награды */
+@keyframes rewardGlow {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+}
+
+.reward-animation {
+  animation: rewardGlow 0.5s ease-out;
+}

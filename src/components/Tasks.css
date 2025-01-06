@@ -1,0 +1,74 @@
+.tasks-container {
+  padding: 20px;
+  color: white;
+}
+
+.tasks-container h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.tasks-section {
+  margin-bottom: 30px;
+}
+
+.tasks-section h2 {
+  font-size: 18px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1A1A1A;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.task-text {
+  font-size: 16px;
+  color: white;
+}
+
+.task-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-reward {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #FFD700;
+  font-weight: 500;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.task-arrow {
+  color: #666;
+  font-size: 24px;
+  font-weight: bold;
+}
