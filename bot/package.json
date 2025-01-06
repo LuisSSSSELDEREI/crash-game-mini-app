@@ -1,0 +1,12 @@
+{
+  "name": "crash-game-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for Crash Game Mini App",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0"
+  }
+}

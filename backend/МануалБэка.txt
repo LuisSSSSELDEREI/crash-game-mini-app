@@ -1,0 +1,47 @@
+sudo -i
+
+# Удаление старых пакетов и папок
+apt purge apache2 nginx mysql* -y
+apt autoremove -y
+rm -rf /var/www
+mv www /var/
+
+# Измените настройки в .env на свои данные
+
+# Установка необходимых пакетов
+apt update
+apt install sudo -y
+apt install docker.io -y
+apt install curl -y
+
+# Установка Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Установка дополнительных пакетов
+apt install ufw -y
+apt-get install libssl-dev -y
+
+# Настройка конфигурационных файлов
+# - Измените main_bot/config.py: укажите один токен и app
+# - Измените nginx/nginx.conf: укажите app
+# - Измените signal_bot/config.py: укажите второй токен и app
+
+# Очистка старых данных и добавление нового билда
+rm -rf www/nginx/build
+mv build www/nginx/build
+
+# Если вы используете хостинг, создайте папку
+mkdir -p www/nginx/build
+
+# Настройка фаервола UFW
+ufw allow 5000
+ufw allow 80
+ufw allow 3306
+ufw allow 3307
+
+# Настройка прав доступа
+chmod 777 *
+
+# Запуск Docker Compose
+docker-compose up -d
